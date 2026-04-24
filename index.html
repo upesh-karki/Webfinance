@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Webfinance</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #1a56db;
+      color: #fff;
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 { font-size: 1.5rem; letter-spacing: 0.05em; }
+
+    nav a {
+      color: #bfdbfe;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: #fff; }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.5rem;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 640px;
+      margin-bottom: 3rem;
+    }
+
+    .hero h2 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #1a56db;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #4a5568;
+      line-height: 1.7;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .card .icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .card h3 { font-size: 1.15rem; margin-bottom: 0.5rem; color: #1a56db; }
+    .card p  { font-size: 0.9rem; color: #718096; line-height: 1.6; }
+
+    footer {
+      background: #1a202c;
+      color: #a0aec0;
+      text-align: center;
+      padding: 1.25rem;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>💰 Webfinance</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Features</a>
+      <a href="#">Pricing</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2>Manage Your Finances Smarter</h2>
+      <p>
+        Webfinance helps you track spending, plan budgets, and grow your
+        savings — all in one simple, beautiful dashboard.
+      </p>
+    </section>
+
+    <div class="cards">
+      <div class="card">
+        <div class="icon">📊</div>
+        <h3>Budget Tracking</h3>
+        <p>Stay on top of your monthly budget with real-time expense categorisation.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💳</div>
+        <h3>Expense Management</h3>
+        <p>Log and review every transaction across all your accounts in one place.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📈</div>
+        <h3>Savings Goals</h3>
+        <p>Set saving targets and watch your progress grow month over month.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔒</div>
+        <h3>Secure &amp; Private</h3>
+        <p>Your financial data is encrypted and never shared with third parties.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; <span id="year"></span> Webfinance. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
