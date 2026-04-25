@@ -1,152 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Ledger - Personal Finance</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #f8fafc; --surface: #ffffff; --surface-2: #f1f5f9; --border: #e2e8f0;
-    --text: #0f172a; --text-muted: #64748b; --primary: #0ea5e9; --primary-dark: #0284c7;
-    --green: #10b981; --red: #f43f5e; --amber: #f59e0b; --purple: #8b5cf6;
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --radius: 16px; --radius-sm: 12px; --radius-lg: 24px;
-  }
-  
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0f172a; --surface: #1e293b; --surface-2: #334155; --border: #334155;
-      --text: #f8fafc; --text-muted: #94a3b8; --primary: #38bdf8; --primary-dark: #0ea5e9;
-    }
-  }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body { 
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-    background: var(--bg); color: var(--text); line-height: 1.5;
-    padding-bottom: 88px; font-size: 15px;
-  }
-  
-  h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
-  h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
-  h3 { font-size: 16px; font-weight: 600; }
-  
-  .container { max-width: 640px; margin: 0 auto; padding: 20px 16px; }
-  
-  .card { 
-    background: var(--surface); border-radius: var(--radius); padding: 20px; 
-    box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-bottom: 16px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .card:active { transform: scale(0.98); }
-  
-  .flex { display: flex; gap: 12px; align-items: center; }
-  .flex-between { justify-content: space-between; }
-  .flex-col { flex-direction: column; align-items: stretch; }
-  .grid { display: grid; gap: 12px; }
-  .grid-2 { grid-template-columns: repeat(2, 1fr); }
-  
-  input, select, textarea {
-    background: var(--surface-2); border: 1px solid var(--border); color: var(--text);
-    border-radius: var(--radius-sm); padding: 14px 16px; font-size: 16px; width: 100%;
-    font-family: inherit; transition: border 0.2s ease, box-shadow 0.2s ease;
-  }
-  input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgb(14 165 233 / 0.1); }
-  
-  button {
-    background: var(--primary); color: white; font-weight: 600; cursor: pointer; border: none;
-    border-radius: var(--radius-sm); padding: 14px 20px; font-size: 15px; width: 100%;
-    font-family: inherit; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  button:hover { background: var(--primary-dark); }
-  button:active { transform: scale(0.96); }
-  button.secondary { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
-  button.ghost { background: transparent; color: var(--primary); }
-  button.icon { width: 44px; height: 44px; padding: 0; border-radius: 12px; }
-  
-  .metric { text-align: left; }
-  .metric-label { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500; }
-  .metric-value { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
-  .metric-value.lg { font-size: 36px; }
-  .metric-change { font-size: 13px; font-weight: 500; margin-top: 4px; }
-  
-  .positive { color: var(--green); }
-  .negative { color: var(--red); }
-  
-  .badge {
-    display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; 
-    font-size: 12px; font-weight: 500; background: var(--surface-2); color: var(--text-muted);
-  }
-  .badge.fixed { background: rgb(59 130 246 / 0.1); color: #3b82f6; }
-  .badge.range { background: rgb(245 158 11 / 0.1); color: var(--amber); }
-  .badge.dynamic { background: rgb(16 185 129 / 0.1); color: var(--green); }
-  
-  .progress { height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; margin: 12px 0; }
-  .progress-fill { height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.5s ease; }
-  
-  .nav-bar {
-    position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface);
-    border-top: 1px solid var(--border); padding: 8px 16px 20px; backdrop-filter: blur(12px);
-    background: color-mix(in srgb, var(--surface) 85%, transparent);
-  }
-  .nav-content { max-width: 640px; margin: 0 auto; display: flex; justify-content: space-around; }
-  .nav-item { 
-    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
-    padding: 8px; border-radius: var(--radius-sm); color: var(--text-muted); 
-    font-size: 11px; font-weight: 500; transition: all 0.2s ease; cursor: pointer;
-  }
-  .nav-item.active { color: var(--primary); }
-  .nav-item svg { width: 24px; height: 24px; }
-  
-  .list-item { 
-    padding: 16px 0; border-bottom: 1px solid var(--border); display: flex; 
-    justify-content: space-between; align-items: center; gap: 12px;
-  }
-  .list-item:last-child { border-bottom: none; }
-  
-  .avatar {
-    width: 44px; height: 44px; border-radius: 12px; background: var(--surface-2);
-    display: flex; align-items: center; justify-content: center; font-size: 18px;
-  }
-  
-  .empty {
-    text-align: center; padding: 48px 20px; color: var(--text-muted);
-  }
-  .empty svg { width: 64px; height: 64px; margin-bottom: 16px; opacity: 0.5; }
-  
-  .toast {
-    position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
-    background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-lg); font-weight: 500; z-index: 1000; transition: transform 0.3s ease;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
-  
-  .sheet {
-    position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface);
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 24px 20px 40px;
-    box-shadow: var(--shadow-lg); transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
-    z-index: 100; max-height: 90vh; overflow-y: auto;
-  }
-  .sheet.show { transform: translateY(0); }
-  .sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
-  .overlay { position: fixed; inset: 0; background: rgb(0 0 0 / 0.4); opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 99; }
-  .overlay.show { opacity: 1; pointer-events: all; }
-  
-  .insight {
-    background: linear-gradient(135deg, rgb(14 165 233 / 0.1), rgb(139 92 246 / 0.1));
-    border: 1px solid rgb(14 165 233 / 0.2); border-radius: var(--radius-sm); padding: 16px;
-    margin-bottom: 12px; font-size: 14px;
-  }
-  
-  #video, #canvas { display: none; width: 100%; border-radius: var(--radius-sm); margin-top: 12px; }
-</style>
-<script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
-<script src='https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js'></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Ledger - Personal Finance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+  <script src='https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js'></script>
 </head>
 <body>
 
@@ -155,7 +18,7 @@
     <div class="flex flex-between" style="margin-bottom: 24px;">
       <div>
         <h1>Ledger</h1>
-        <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Good afternoon, Upesh</p>
+        <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;" id="greeting">Good afternoon</p>
       </div>
       <button class="icon secondary" onclick="toggleTheme()">
         <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
@@ -219,7 +82,7 @@
     <div class="card">
       <h3 style="margin-bottom: 16px;">Create Goal</h3>
       <div class="grid flex-col">
-        <input type="text" id="goalName" placeholder="Goal name">
+        <input type="text" id="goalName" placeholder="Goal name - Emergency Fund">
         <input type="number" id="goalAmount" placeholder="Target amount" step="0.01">
         <input type="date" id="goalDate">
         <button onclick="addGoal()">Create Goal</button>
@@ -248,447 +111,62 @@
         <input type="date" id="incDate">
         <button onclick="saveIncome()">Save Income</button>
       </div>
-    </div>
-    <div class="card">
-      <h3 style="margin-bottom: 16px;">History</h3>
-      <div id="incomeList"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Add Expense Sheet -->
-<div class="overlay" id="overlay" onclick="closeSheet()"></div>
-<div class="sheet" id="addSheet">
-  <div class="sheet-handle"></div>
-  <h2 style="margin-bottom: 20px;">Add Expense</h2>
-  <div class="grid flex-col">
-    <input type="number" id="expAmount" placeholder="0.00" step="0.01" style="font-size: 32px; font-weight: 700; text-align: center;">
-    <input type="text" id="expName" placeholder="What was it for?" list="expSuggestions">
-    <datalist id="expSuggestions"></datalist>
-    <select id="expCategory">
-      <option value="fixed">Fixed - Same every month</option>
-      <option value="range">Range - Utilities, varies monthly</option>
-      <option value="dynamic">Dynamic - Food, shopping</option>
-      <option value="unexpected">Unexpected - One-time</option>
-    </select>
-    <input type="date" id="expDate">
-    <div class="grid grid-2">
-      <button class="secondary" onclick="scanReceipt()">📷 Scan</button>
-      <button class="secondary" onclick="startVoice()">🎤 Voice</button>
-    </div>
-    <video id="video" autoplay></video>
-    <canvas id="canvas"></canvas>
-    <button onclick="saveExpense()">Save Expense</button>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<nav class="nav-bar">
-  <div class="nav-content">
-    <div class="nav-item active" onclick="showView('dashboard')">
-      <svg fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
-      <span>Home</span>
-    </div>
-    <div class="nav-item" onclick="openAddSheet()">
-      <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
-      <span>Add</span>
-    </div>
-    <div class="nav-item" onclick="showView('income')">
-      <svg fill="currentColor" viewBox="0 0 20 20"><path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/></svg>
-      <span>Income</span>
-    </div>
-    <div class="nav-item" onclick="showView('goals')">
-      <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-      <span>Goals</span>
-    </div>
-  </div>
-</nav>
-
-<script>
-// === DB & UTILS ===
-const DB = {
-  get: (key) => JSON.parse(localStorage.getItem(key) || '[]'),
-  set: (key, val) => localStorage.setItem(key, JSON.stringify(val)),
-  push: (key, item) => {
-    const arr = DB.get(key);
-    item.id = Date.now() + Math.random();
-    arr.push(item);
-    DB.set(key, arr);
-    return item;
-  }
-};
-
-const fmt = (n) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
-const today = new Date().toISOString().split('T')[0];
-document.getElementById('expDate').value = today;
-document.getElementById('incDate').value = today;
-
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3000);
-}
-
-function openAddSheet() {
-  document.getElementById('overlay').classList.add('show');
-  document.getElementById('addSheet').classList.add('show');
-  loadSuggestions();
-}
-
-function closeSheet() {
-  document.getElementById('overlay').classList.remove('show');
-  document.getElementById('addSheet').classList.remove('show');
-}
-
-// === VIEWS ===
-function showView(view) {
-  document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
-  document.getElementById(view).style.display = 'block';
-  document.querySelectorAll('.nav-item').forEach(t => t.classList.remove('active'));
-  event?.target.closest('.nav-item')?.classList.add('active');
-  
-  if(view === 'dashboard') renderDashboard();
-  if(view === 'expenses') renderExpenses();
-  if(view === 'goals') renderGoals();
-  if(view === 'income') renderIncome();
-}
-
-// === CRUD ===
-function saveExpense() {
-  const exp = {
-    amount: parseFloat(document.getElementById('expAmount').value),
-    name: document.getElementById('expName').value.trim(),
-    category: document.getElementById('expCategory').value,
-    date: document.getElementById('expDate').value,
-    timestamp: new Date().toISOString()
-  };
-  if(!exp.amount || !exp.name) return showToast('Enter amount and name');
-  DB.push('expenses', exp);
-  showToast('Expense saved');
-  closeSheet();
-  document.getElementById('expAmount').value = '';
-  document.getElementById('expName').value = '';
-  renderDashboard();
-}
-
-function saveIncome() {
-  const inc = {
-    amount: parseFloat(document.getElementById('incAmount').value),
-    type: document.getElementById('incType').value,
-    freq: document.getElementById('incFreq').value,
-    date: document.getElementById('incDate').value
-  };
-  if(!inc.amount) return showToast('Enter amount');
-  DB.push('income', inc);
-  showToast('Income added');
-  document.getElementById('incAmount').value = '';
-  renderIncome();
-}
-
-function addGoal() {
-  const goal = {
-    name: document.getElementById('goalName').value.trim(),
-    target: parseFloat(document.getElementById('goalAmount').value),
-    date: document.getElementById('goalDate').value
-  };
-  if(!goal.name || !goal.target) return showToast('Enter goal details');
-  DB.push('goals', goal);
-  showToast('Goal created');
-  renderGoals();
-}
-
-// === ANALYTICS ===
-function calculateMetrics() {
-  const expenses = DB.get('expenses');
-  const income = DB.get('income');
-  const now = new Date();
-  const thisMonth = now.getMonth(), thisYear = now.getFullYear();
-  const lastMonth = thisMonth === 0 ? 11 : thisMonth - 1;
-  const lastMonthYear = thisMonth === 0 ? thisYear - 1 : thisYear;
-
-  const filterMonth = (items, m, y) => items.filter(i => {
-    const d = new Date(i.date);
-    return d.getMonth() === m && d.getFullYear() === y;
-  });
-
-  const sumIncome = (items) => items.reduce((sum, i) => {
-    if(i.freq === 'monthly' || i.freq === 'once') return sum + i.amount;
-    if(i.freq === 'biweekly') return sum + i.amount * 2;
-    if(i.freq === 'weekly') return sum + i.amount * 4;
-    return sum;
-  }, 0);
-
-  const thisInc = sumIncome(filterMonth(income, thisMonth, thisYear));
-  const lastInc = sumIncome(filterMonth(income, lastMonth, lastMonthYear));
-  const thisExp = filterMonth(expenses, thisMonth, thisYear).reduce((s,e) => s + e.amount, 0);
-  const lastExp = filterMonth(expenses, lastMonth, lastMonthYear).reduce((s,e) => s + e.amount, 0);
-
-  // Projections
-  const expMap = {};
-  expenses.forEach(e => {
-    const key = e.name.toLowerCase() + '|' + e.category;
-    if(!expMap[key]) expMap[key] = [];
-    expMap[key].push(e.amount);
-  });
-
-  let projectedExp = 0;
-  Object.entries(expMap).forEach(([key, amounts]) => {
-    const [, cat] = key.split('|');
-    const avg = amounts.reduce((a,b) => a+b, 0) / amounts.length;
-    const last = amounts[amounts.length - 1];
-    if(cat === 'fixed') projectedExp += last;
-    else if(cat === 'range') projectedExp += 0.6 * last + 0.4 * avg;
-    else if(cat === 'dynamic') projectedExp += avg;
-  });
-
-  return { thisInc, lastInc, thisExp, lastExp, projectedExp, expMap, expenses };
-}
-
-// === RENDER ===
-function renderDashboard() {
-  const { thisInc, lastInc, thisExp, lastExp, projectedExp, expMap } = calculateMetrics();
-  const net = thisInc - thisExp;
-  const lastNet = lastInc - lastExp;
-  const netChange = lastNet === 0 ? 0 : ((net - lastNet) / Math.abs(lastNet)) * 100;
-
-  document.getElementById('netMonth').textContent = fmt(net);
-  document.getElementById('netMonth').className = `metric-value lg ${net >= 0 ? 'positive' : 'negative'}`;
-  document.getElementById('netChange').textContent = `${netChange >= 0 ? '+' : ''}${netChange.toFixed(1)}% vs last month`;
-  document.getElementById('netChange').className = `metric-change ${netChange >= 0 ? 'positive' : 'negative'}`;
-  document.getElementById('monthIncome').textContent = fmt(thisInc);
-  document.getElementById('monthExpense').textContent = fmt(thisExp);
-
-  // Insights
-  const insights = [];
-  Object.entries(expMap).forEach(([key, amounts]) => {
-    const [name, cat] = key.split('|');
-    if(cat === 'range' && amounts.length >= 2) {
-      const last = amounts[amounts.length - 1];
-      const prev = amounts[amounts.length - 2];
-      if(last > prev * 1.2) insights.push(`${name} is up ${((last/prev - 1) * 100).toFixed(0)}% from last month`);
-    }
-  });
-  if(insights.length === 0) insights.push('Your spending is consistent with last month. Keep it up!');
-  document.getElementById('insights').innerHTML = insights.map(i => `<div class="insight">${i}</div>`).join('');
-
-  // Recent expenses
-  const recent = DB.get('expenses').slice(-3).reverse();
-  document.getElementById('recentExpenses').innerHTML = recent.length ? recent.map(e => `
-    <div class="list-item">
-      <div class="flex">
-        <div class="avatar">${e.name[0].toUpperCase()}</div>
-        <div>
-          <div style="font-weight: 500;">${e.name}</div>
-          <div style="font-size: 13px; color: var(--text-muted);">${new Date(e.date).toLocaleDateString()} • <span class="badge ${e.category}">${e.category}</span></div>
-        </div>
-      </div>
-      <div style="font-weight: 600;" class="negative">-${fmt(e.amount)}</div>
-    </div>
-  `).join('') : '<div class="empty">No expenses yet</div>';
-
-  renderCharts(thisInc, thisExp, projectedExp);
-}
-
-function renderCharts(inc, exp, projExp) {
-  // Forecast bar chart
-  const ctx1 = document.getElementById('forecastChart');
-  if(window.forecastChart) window.forecastChart.destroy();
-  window.forecastChart = new Chart(ctx1, {
-    type: 'bar',
-    data: {
-      labels: ['This Month', 'Next Month', 'Month +2'],
-      datasets: [
-        { label: 'Income', data: [inc, inc, inc], backgroundColor: '#10b981', borderRadius: 8 },
-        { label: 'Expenses', data: [exp, projExp, projExp], backgroundColor: '#f43f5e', borderRadius: 8 }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        y: { grid: { color: 'var(--border)' }, ticks: { color: 'var(--text-muted)' } },
-        x: { grid: { display: false }, ticks: { color: 'var(--text-muted)' } }
-      }
-    }
-  });
-
-  // Sparkline
-  const ctx2 = document.getElementById('sparkline');
-  const last6 = Array.from({length: 6}, (_, i) => {
-    const d = new Date(); d.setMonth(d.getMonth() - i);
-    return calculateMetrics(); // Simplified - would filter by month in real app
-  }).reverse();
-  if(window.sparkChart) window.sparkChart.destroy();
-  window.sparkChart = new Chart(ctx2, {
-    type: 'line',
-    data: {
-      labels: ['', '', '', '', '', ''],
-      datasets: [{ data: last6.map(() => Math.random() * 1000 + 500), borderColor: '#0ea5e9', borderWidth: 2, tension: 0.4, pointRadius: 0 }]
-    },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
-  });
-}
-
-function renderExpenses() {
-  const expenses = DB.get('expenses').reverse();
-  document.getElementById('allExpenses').innerHTML = expenses.length ? expenses.map(e => `
-    <div class="list-item">
-      <div class="flex">
-        <div class="avatar">${e.name[0].toUpperCase()}</div>
-        <div>
-          <div style="font-weight: 500;">${e.name}</div>
-          <div style="font-size: 13px; color: var(--text-muted);">${new Date(e.date).toLocaleDateString()}</div>
-        </div>
-      </div>
-      <div style="text-align: right;">
-        <div style="font-weight: 600;" class="negative">-${fmt(e.amount)}</div>
-        <span class="badge ${e.category}">${e.category}</span>
-      </div>
-    </div>
-  `).join('') : '<div class="empty"><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/></svg><p>No expenses yet<br>Add your first one</p></div>';
-}
-
-function renderGoals() {
-  const goals = DB.get('goals');
-  const { thisInc, thisExp } = calculateMetrics();
-  const saved = Math.max(0, thisInc - thisExp);
-
-  document.getElementById('goalsList').innerHTML = goals.length? goals.map(g => {
-    const targetDate = new Date(g.date);
-    const createdDate = new Date(g.created);
-    const now = new Date();
-    const totalMonths = Math.max(1, Math.ceil((targetDate - createdDate) / (1000*60*60*24*30)));
-    const monthsPassed = Math.ceil((now - createdDate) / (1000*60*60*24*30));
-    const monthsLeft = Math.max(0, Math.ceil((targetDate - now) / (1000*60*60*24*30)));
-
-    // Assume user saves consistently - this is current progress
-    const expectedProgress = (monthsPassed / totalMonths) * g.target;
-    const currentSaved = Math.min(saved, expectedProgress); // Simplified: using this month's savings
-    const progress = Math.min(100, (currentSaved / g.target) * 100);
-    const needPerMonth = monthsLeft > 0? Math.max(0, (g.target - currentSaved) / monthsLeft) : 0;
-
-    return `
       <div class="card">
-        <div class="flex flex-between" style="margin-bottom: 8px;">
-          <h3>${g.name}</h3>
-          <button class="icon danger" style="width: 32px; height: 32px;" onclick="deleteGoal('${g.id}')">
-            <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-          </button>
-        </div>
-        <div class="flex flex-between" style="margin-bottom: 4px;">
-          <span style="font-size: 13px; color: var(--text-muted);">${fmt(currentSaved)} of ${fmt(g.target)}</span>
-          <span style="font-size: 13px; font-weight: 600;">${progress.toFixed(0)}%</span>
-        </div>
-        <div class="progress"><div class="progress-fill" style="width:${progress}%"></div></div>
-        <p style="color: var(--text-muted); font-size: 13px; margin-top: 8px;">
-          ${monthsLeft > 0? `Save ${fmt(needPerMonth)}/mo to reach by ${targetDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}` : 'Goal deadline reached'}
-        </p>
-      </div>`;
-  }).join('') : '<div class="empty"><svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg><p>No goals yet<br>Create one to start saving</p></div>';
-}
-
-function renderIncome() {
-  const income = DB.get('income').slice().reverse();
-  document.getElementById('incomeList').innerHTML = income.length? income.map(i => `
-    <div class="list-item">
-      <div class="flex">
-        <div class="avatar" style="background: rgb(16 185 129 / 0.1); color: var(--green);">$</div>
-        <div>
-          <div style="font-weight: 500; text-transform: capitalize;">${i.type}</div>
-          <div style="font-size: 13px; color: var(--text-muted);">${new Date(i.date).toLocaleDateString()} • ${i.freq}</div>
-        </div>
-      </div>
-      <div class="flex" style="gap: 8px;">
-        <div style="font-weight: 600;" class="positive">+${fmt(i.amount)}</div>
-        <button class="icon danger" style="width: 36px; height: 36px;" onclick="deleteIncome('${i.id}')">
-          <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-        </button>
+        <h3 style="margin-bottom: 16px;">History</h3>
+        <div id="incomeList"></div>
       </div>
     </div>
-  `).join('') : '<div class="empty"><svg fill="currentColor" viewBox="0 0 20 20"><path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0.114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0.99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/></svg><p>No income recorded<br>Add your salary to start tracking</p></div>';
-}
+  </div>
 
-function loadSuggestions() {
-  const expenses = DB.get('expenses');
-  const names = [...new Set(expenses.map(e => e.name))];
-  document.getElementById('expSuggestions').innerHTML = names.map(n => `<option value="${n}">`).join('');
-}
+  <!-- Add Expense Sheet -->
+  <div class="overlay" id="overlay" onclick="closeSheet()"></div>
+  <div class="sheet" id="addSheet">
+    <div class="sheet-handle"></div>
+    <h2 style="margin-bottom: 20px;">Add Expense</h2>
+    <div class="grid flex-col">
+      <input type="number" id="expAmount" placeholder="0.00" step="0.01" style="font-size: 32px; font-weight: 700; text-align: center;">
+      <input type="text" id="expName" placeholder="What was it for?" list="expSuggestions">
+      <datalist id="expSuggestions"></datalist>
+      <select id="expCategory">
+        <option value="fixed">Fixed - Same every month</option>
+        <option value="range">Range - Utilities, varies monthly</option>
+        <option value="dynamic">Dynamic - Food, shopping</option>
+        <option value="unexpected">Unexpected - One-time</option>
+      </select>
+      <input type="date" id="expDate">
+      <div class="grid grid-2">
+        <button class="secondary" onclick="scanReceipt()">📷 Scan</button>
+        <button class="secondary" onclick="startVoice()">🎤 Voice</button>
+      </div>
+      <video id="video" autoplay></video>
+      <canvas id="canvas"></canvas>
+      <button onclick="saveExpense()">Save Expense</button>
+    </div>
+  </div>
 
-// === RECEIPT SCAN ===
-async function scanReceipt() {
-  const video = document.getElementById('video');
-  const canvas = document.getElementById('canvas');
+  <div class="toast" id="toast"></div>
 
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-    video.srcObject = stream;
-    video.style.display = 'block';
-    showToast('Point at receipt, capturing in 3s...');
+  <nav class="nav-bar">
+    <div class="nav-content">
+      <div class="nav-item active" onclick="showView('dashboard')">
+        <svg fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+        <span>Home</span>
+      </div>
+      <div class="nav-item" onclick="openAddSheet()">
+        <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+        <span>Add</span>
+      </div>
+      <div class="nav-item" onclick="showView('income')">
+        <svg fill="currentColor" viewBox="0 0 20 20"><path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0.114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0.99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/></svg>
+        <span>Income</span>
+      </div>
+      <div class="nav-item" onclick="showView('goals')">
+        <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+        <span>Goals</span>
+      </div>
+    </div>
+  </nav>
 
-    setTimeout(async () => {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      canvas.getContext('2d').drawImage(video, 0, 0);
-      stream.getTracks().forEach(t => t.stop());
-      video.style.display = 'none';
-      canvas.style.display = 'block';
-
-      showToast('Scanning receipt...');
-      const { data: { text } } = await Tesseract.recognize(canvas, 'eng');
-      const total = text.match(/total[:\s]*\$?(\d+\.?\d*)/i) || text.match(/amount[:\s]*\$?(\d+\.?\d*)/i);
-
-      if(total) {
-        document.getElementById('expAmount').value = total[1];
-        showToast(`Found total: ${fmt(total[1])}`);
-      } else {
-        showToast('Could not find total. Enter manually.');
-      }
-      canvas.style.display = 'none';
-    }, 3000);
-  } catch(err) {
-    showToast('Camera access denied');
-    video.style.display = 'none';
-  }
-}
-
-// === VOICE INPUT ===
-function startVoice() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SpeechRecognition) return showToast('Voice not supported on this device');
-
-  const rec = new SpeechRecognition();
-  rec.lang = 'en-US';
-  showToast('Listening...');
-
-  rec.onresult = (e) => {
-    const text = e.results[0][0].transcript;
-    const match = text.match(/(\d+\.?\d*)\s*(dollars?|bucks?)?\s*(?:for|on)?\s*(.+)/i);
-    if(match) {
-      document.getElementById('expAmount').value = match[1];
-      document.getElementById('expName').value = match[3].trim();
-      showToast(`Heard: ${fmt(match[1])} for ${match[3]}`);
-    } else {
-      showToast(`Heard: "${text}" - please check`);
-    }
-  };
-  rec.onerror = () => showToast('Voice recognition failed');
-  rec.start();
-}
-
-// === INIT ===
-function init() {
-  // Set theme from localStorage
-  if(localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    document.documentElement.classList.add('dark');
-  }
-
-  // Set default dates
-  document.getElementById('goalDate').value = new Date(Date.now() + 365*24*60*60*1000).toISOString().split('T')[0];
-
-  renderDashboard();
-}
-
-// Run on load
-init();
+  <script src="app.js"></script>
+</body>
+</html>
